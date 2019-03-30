@@ -28,7 +28,7 @@ The images are available on DockerHub:
 
 To run this application, you need to have a recent version of Docker installed. To spin up a bare-bones implementation locally, with default configuration, simply run this command from the project root:
 ```
-docker-compose -d up
+docker-compose up -d 
 ```
 
 In a more real-world scenario, you'll want to:
