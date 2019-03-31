@@ -15,7 +15,6 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
     autoconf \
     binutils-doc \
     bison \
-    build-essential \
     flex \
     # Git
     git \
@@ -65,25 +64,26 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
     # Other dependencies
     unzip \
     wget \
+    ruby2.5-dev  \
   # Install Ruby.
-  && wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz \
-  && tar -xzvf ruby-install-0.7.0.tar.gz \
-  && cd ruby-install-0.7.0/ \
-  && make install \
-  && ruby-install ruby 2.4.1 \
-  && cd / \
+  #&& wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz \
+  #&& tar -xzvf ruby-install-0.7.0.tar.gz \
+  #&& cd ruby-install-0.7.0/ \
+  #&& make install \
+  #&& ruby-install ruby 2.4.1 \
+  #&& cd / \
   # Install Pip.
   && wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py \
   && python /tmp/get-pip.py \
   # Clean up.
-  && rm ruby-install-0.7.0.tar.gz \
-  && rm -rf ruby-install-0.7.0 \
+  #&& rm ruby-install-0.7.0.tar.gz \
+  #&& rm -rf ruby-install-0.7.0 \
   && rm /tmp/get-pip.py \
   && rm -rf /var/lib/apt/lists/*
 
 ENV CC=/usr/bin/gcc-4.9
 ENV CXX=/usr/bin/g++-4.9
-ENV PATH=/opt/rubies/ruby-2.4.1/bin:$PATH
+# ENV PATH=/opt/rubies/ruby-2.4.1/bin:$PATH
 
 # Install Ruby utilities.
 RUN gem install bundler compass
