@@ -11,8 +11,8 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
  # && add-apt-repository ppa:cartodb/postgresql-10 \
   # Install apt packages.
   && apt-get update && apt-get -y --no-install-recommends install \
-    # build essentials
     autoconf \
+    automake \
     binutils-doc \
     bison \
     flex \
@@ -40,7 +40,11 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
     # libgdal1-dev \
     # gdal2.1-static-bin \
     # Postgis
+    zlib1g \
+    zlib1g-dev \
+    libxml2 \
     libxml2-dev \
+    libxslt-dev \
     liblwgeom-2.4-0 \
     postgis \
     postgresql-10-postgis-2.4 \
@@ -85,8 +89,6 @@ ENV CC=/usr/bin/gcc-4.9
 ENV CXX=/usr/bin/g++-4.9
 # ENV PATH=/opt/rubies/ruby-2.4.1/bin:$PATH
 
-# Install Ruby utilities.
-RUN gem install bundler compass
 
 # CartoDB/cartodb version
 ENV CARTODB_VERSION=4.26.0
@@ -95,6 +97,9 @@ ENV CARTODB_VERSION=4.26.0
 RUN git clone --recursive --branch v${CARTODB_VERSION} --depth 1 https://github.com/CartoDB/cartodb.git
 
 WORKDIR /cartodb
+
+# Install Ruby utilities.
+RUN gem install bundler --version=1.17.3 && gem install compass archive-tar-minitar rack && bundle update thin 
 
 # Environment type.
 ENV RAILS_ENV=development
