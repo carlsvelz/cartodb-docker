@@ -5,6 +5,8 @@
 
 This image contains the [Carto web application](https://github.com/CartoDB/cartodb), used to administer the Carto system.
 
+For more information see [CartoDB Installation](https://cartodb.readthedocs.io/en/latest/install.html)
+
 ## Configuration
 
 Upon starting the application, a new user will be created so that you can log into the system. For security, we recommend you change the default login credentials by passing the following environment variables to the container:
