@@ -1,5 +1,6 @@
 FROM ubuntu:18.04
 
+ENV DEBIAN_FRONTEND noninteractive
 # Set locale.
 RUN apt-get -y update && apt-get install -y locales software-properties-common  build-essential  \
   && locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \

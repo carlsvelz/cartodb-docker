@@ -5,7 +5,9 @@
 
 This image contains the [Carto web application](https://github.com/CartoDB/cartodb), used to administer the Carto system.
 
-For more information see [CartoDB Installation](https://cartodb.readthedocs.io/en/latest/install.html)
+Notes: 
+*  For more information see [CartoDB Installation](https://cartodb.readthedocs.io/en/latest/install.html)
+*  For ubuntu:18.04 see [sverhoeven/docker-cartodb](https://github.com/sverhoeven/docker-cartodb/blob/master/Dockerfile#L4)
 
 ## Configuration
 
