@@ -35,7 +35,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 # CartoDB/cartodb-postgresql version
-ENV CARTODB_POSTGRESQL_VERSION=0.23.1
+ENV CARTODB_POSTGRESQL_VERSION=0.24.1
 
 RUN git clone \
     --branch ${CARTODB_POSTGRESQL_VERSION} \
