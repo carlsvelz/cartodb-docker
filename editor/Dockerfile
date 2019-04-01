@@ -23,6 +23,8 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
     libpq-dev \
     postgresql-client-10 \
     postgresql-client-common \
+    libcurl4-gnutls-dev \
+    libffi-dev \
     # GIS:
     # - Proj
     proj-bin \
@@ -42,7 +44,10 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
     # Postgis
     zlib1g \
     zlib1g-dev \
-    libxml2 \
+    libc6-dev \
+    liblzma-dev  \
+    pkg-config \ 
+    #libxml2 \
     libxml2-dev \
     libxslt-dev \
     liblwgeom-2.4-0 \
@@ -98,11 +103,17 @@ RUN git clone --recursive --branch v${CARTODB_VERSION} --depth 1 https://github.
 
 WORKDIR /cartodb
 
-# Install Ruby utilities.
-RUN gem install bundler --version=1.17.3 && gem install compass archive-tar-minitar rack && bundle update thin 
-
 # Environment type.
 ENV RAILS_ENV=development
+
+# Install Ruby utilities.
+RUN gem install bundler --version=1.17.3 && gem install compass archive-tar-minitar rack 
+
+# \  && bundle update thin 
+# RUN gem install nokogiri -v '1.8.5' --source 'http://rubygems.org/'
+#RUN gem install nokogiri -- --use-system-libraries
+#RUN gem install nokogiri -v '1.8.5' --source 'http://rubygems.org/'
+#RUN bundle config build.nokogiri --use-system-libraries--with-xslt-dir=/usr/local/opt/libxslt --with-xml2-dir=/usr/local/opt/libxml2
 
 # Install Ruby dependencies.
 RUN bundle install \
