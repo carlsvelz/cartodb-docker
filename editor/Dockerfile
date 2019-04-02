@@ -63,10 +63,10 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
 # https://github.com/CartoDB/cartodb/blob/4906f4bba025300e9d5c52ecd509eda5b2ccb36d/doc/manual/source/install.rst
 RUN apt-add-repository ppa:brightbox/ruby-ng && apt-get update  \
   &&  apt-get install  -y ruby2.4 ruby2.4-dev   \
-  &&  apt-get install  -y ruby-bundler    \
+  &&  apt-get install  -y ruby-bundler curl   \
   && gem install compass
 
-RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -   \
+RUN curl -sL https://deb.nodesource.com/setup_10.x |   bash -   \
   && apt-get install  -y  nodejs 
 
 RUN node --version 
