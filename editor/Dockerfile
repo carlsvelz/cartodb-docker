@@ -73,27 +73,21 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
     # Other dependencies
     unzip \
     wget \
-    ruby2.5-dev  \
-  # Install Ruby.
-  #&& wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz \
-  #&& tar -xzvf ruby-install-0.7.0.tar.gz \
-  #&& cd ruby-install-0.7.0/ \
-  #&& make install \
-  #&& ruby-install ruby 2.4.1 \
-  #&& cd / \
   # Install Pip.
   && wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py \
   && python /tmp/get-pip.py \
-  # Clean up.
-  #&& rm ruby-install-0.7.0.tar.gz \
-  #&& rm -rf ruby-install-0.7.0 \
   && rm /tmp/get-pip.py \
   && rm -rf /var/lib/apt/lists/*
 
-ENV CC=/usr/bin/gcc-4.9
-ENV CXX=/usr/bin/g++-4.9
-# ENV PATH=/opt/rubies/ruby-2.4.1/bin:$PATH
+# https://github.com/CartoDB/cartodb/blob/4906f4bba025300e9d5c52ecd509eda5b2ccb36d/doc/manual/source/install.rst
+RUN apt-add-repository ppa:brightbox/ruby-ng && apt-get update  \
+  &&  apt-get install  -y ruby2.4 ruby2.4-dev   \
+  &&  apt-get install  -y ruby-bundler
+RUN gem install compass
 
+#ENV CC=/usr/bin/gcc-4.9
+#ENV CXX=/usr/bin/g++-4.9
+# ENV PATH=/opt/rubies/ruby-2.4.1/bin:$PATH
 
 # CartoDB/cartodb version
 ENV CARTODB_VERSION=4.26.0
@@ -101,19 +95,50 @@ ENV CARTODB_VERSION=4.26.0
 # Download the Editor program, using the specified release tag.
 RUN git clone --recursive --branch v${CARTODB_VERSION} --depth 1 https://github.com/CartoDB/cartodb.git
 
-WORKDIR /cartodb
-
 # Environment type.
 ENV RAILS_ENV=development
 
-# Install Ruby utilities.
-RUN gem install bundler --version=1.17.3 && gem install compass archive-tar-minitar rack 
+#RUN whereis libxml2
+#RUN ls -lah /usr/include/libxml2
+#RUN ls -lah /usr/local/
 
-# \  && bundle update thin 
-# RUN gem install nokogiri -v '1.8.5' --source 'http://rubygems.org/'
-#RUN gem install nokogiri -- --use-system-libraries
-#RUN gem install nokogiri -v '1.8.5' --source 'http://rubygems.org/'
-#RUN bundle config build.nokogiri --use-system-libraries--with-xslt-dir=/usr/local/opt/libxslt --with-xml2-dir=/usr/local/opt/libxml2
+# RUN gem install nokogiri -v 1.8.5   --debug --backtrace --verbose
+
+# RUN gem install nokogiri -v '1.8.5' -- \
+#     --use-system-libraries \
+#     --with-xml2-lib=/usr/lib \
+#     --with-xml2-include=/usr/include/libxml2 \
+#     --with-xslt-lib=/usr/lib \
+#     --with-xslt-include=/usr/include/libxslt
+
+# https://nokogiri.org/tutorials/installing_nokogiri.html
+RUN  gem install nokogiri -- --use-system-libraries 
+# RUN  gem install nokogiri -- --use-system-libraries   \
+#    --with-xml2-include=/usr/include/libxml2/libxml \
+#    --with-xml2-lib=/usr/lib \
+#    --with-xslt-include=/usr/include/libxslt \
+#    --with-xslt-lib=/usr/lib
+# RUN apt-get install  patch   &&  gem install nokogiri
+# RUN gem install nokogiri
+# RUN gem install nokogiri -v '1.8.5' --source 'http://rubygems.org/' 
+# RUN gem install nokogiri --  --with-xslt-dir=/usr/include/ibxslt  --with-xml2-dir=/usr/include/libxml2
+
+# RUN gem install bundler --version=1.17.3  
+
+# RUN bundle config build.nokogiri --use-system-libraries   \
+#     --with-xslt-dir=/usr/local/opt/libxslt  \
+#     --with-xml2-dir=/usr/local/opt/libxml2 &&  \
+#     bundle install 
+# RUN  bundle config build.nokogiri --use-system-libraries
+
+
+WORKDIR /cartodb
+
+RUN gem install  archive-tar-minitar rack && \
+    bundle update thin 
+
+
+
 
 # Install Ruby dependencies.
 RUN bundle install \
