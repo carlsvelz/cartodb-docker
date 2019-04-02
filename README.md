@@ -24,12 +24,26 @@ The images are available on DockerHub:
 - [ihme/cartodb-redis](https://hub.docker.com/r/ihme/cartodb-redis/)
 - [ihme/cartodb-router](https://hub.docker.com/r/ihme/cartodb-router/)
 
-## Usage
+## Simple Usage
 
 To run this application, you need to have a recent version of Docker installed. To spin up a bare-bones implementation locally, with default configuration, simply run this command from the project root:
+
+Clean up previous data:
+```console
+docker-compose down -v --rmi all --remove-orphans
 ```
+
+Builds, (re)creates, starts, and attaches to containers for all services:
+```console
 docker-compose up -d 
 ```
+
+In case of failure on container startup, you can send logs to a file using the following command: 
+```console
+docker logs containername >& logs/myFile.log
+```
+
+## Real World Usage
 
 In a more real-world scenario, you'll want to:
 1. provide some custom configuration

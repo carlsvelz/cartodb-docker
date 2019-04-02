@@ -69,12 +69,8 @@ RUN apt-add-repository ppa:brightbox/ruby-ng && apt-get update  \
 RUN curl -sL https://deb.nodesource.com/setup_10.x |   bash -   \
   && apt-get install  -y  nodejs 
 
-RUN node --version 
-RUN npm --version 
-
-#ENV CC=/usr/bin/gcc-4.9
-#ENV CXX=/usr/bin/g++-4.9
-# ENV PATH=/opt/rubies/ruby-2.4.1/bin:$PATH
+# RUN node --version 
+# RUN npm --version 
 
 # CartoDB/cartodb version
 ENV CARTODB_VERSION=4.26.0
@@ -92,8 +88,6 @@ WORKDIR /cartodb
 
 RUN gem install  archive-tar-minitar rack && \
     bundle update thin 
-
-
 
 # Install Ruby dependencies.
 RUN bundle install \
@@ -119,6 +113,11 @@ RUN bundle install \
     /root/.gem \
     /root/.npm \
   && mkdir -p /cartodb/docker-entrypoint-util
+
+## TODO: Init DB
+## https://github.com/dersteppenwolf/docker-cartodb/blob/master/create_dev_user
+## https://github.com/dersteppenwolf/docker-cartodb/blob/master/Dockerfile#L184
+## https://github.com/ihmeuw/cartodb-docker/blob/master/editor/docker-entrypoint.sh
 
 # Copy resources.
 COPY util/* /cartodb/docker-entrypoint-util/
