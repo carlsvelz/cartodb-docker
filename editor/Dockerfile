@@ -4,76 +4,57 @@ ENV DEBIAN_FRONTEND noninteractive
 # Set locale.
 RUN apt-get -y update && apt-get install -y locales software-properties-common  build-essential  \
   && locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
-  # Add PPAs.
  # && add-apt-repository ppa:cartodb/gcc \
  # && add-apt-repository ppa:cartodb/gis \
  # && add-apt-repository ppa:cartodb/nodejs \
  # && add-apt-repository ppa:cartodb/postgresql-10 \
-  # Install apt packages.
   && apt-get update && apt-get -y --no-install-recommends install \
     autoconf \
     automake \
     binutils-doc \
     bison \
     flex \
-    # Git
     git \
-    # PostgreSQL
     libpq5 \
     libpq-dev \
     postgresql-client-10 \
     postgresql-client-common \
     libcurl4-gnutls-dev \
     libffi-dev \
-    # GIS:
-    # - Proj
     proj-bin \
     proj-data \
     libproj-dev \
-    # - JSON
     libjson-c-dev  \
     python-simplejson \
-    # - GEOS
     libgeos-c1v5 \
     libgeos-dev \
-    # - GDAL
     gdal-bin \
     libgdal-dev \
-    # libgdal1-dev \
-    # gdal2.1-static-bin \
-    # Postgis
     zlib1g \
     zlib1g-dev \
     libc6-dev \
     liblzma-dev  \
     pkg-config \ 
-    #libxml2 \
     libxml2-dev \
     libxslt-dev \
     liblwgeom-2.4-0 \
     postgis \
     postgresql-10-postgis-2.4 \
     postgresql-10-postgis-scripts \
-    # NodeJS and dependencies
     libcairo2-dev \
     libgif-dev \
     libjpeg-dev \
     libpango1.0-dev \
     libpixman-1-0 \
     libpixman-1-dev \
-    nodejs \
-    # Ruby dependencies
     libreadline6-dev \
     openssl \
-    # Python dependencies
     imagemagick \
     python-all-dev \
     unp \
     zip \
-    # Other dependencies
     unzip \
     wget \
-  # Install Pip.
   && wget -O /tmp/get-pip.py https://bootstrap.pypa.io/get-pip.py \
   && python /tmp/get-pip.py \
   && rm /tmp/get-pip.py \
@@ -82,8 +63,14 @@ RUN apt-get -y update && apt-get install -y locales software-properties-common  
 # https://github.com/CartoDB/cartodb/blob/4906f4bba025300e9d5c52ecd509eda5b2ccb36d/doc/manual/source/install.rst
 RUN apt-add-repository ppa:brightbox/ruby-ng && apt-get update  \
   &&  apt-get install  -y ruby2.4 ruby2.4-dev   \
-  &&  apt-get install  -y ruby-bundler
-RUN gem install compass
+  &&  apt-get install  -y ruby-bundler    \
+  && gem install compass
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -   \
+  && apt-get install  -y  nodejs 
+
+RUN node --version 
+RUN npm --version 
 
 #ENV CC=/usr/bin/gcc-4.9
 #ENV CXX=/usr/bin/g++-4.9
@@ -105,6 +92,8 @@ WORKDIR /cartodb
 
 RUN gem install  archive-tar-minitar rack && \
     bundle update thin 
+
+
 
 # Install Ruby dependencies.
 RUN bundle install \
