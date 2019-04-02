@@ -98,47 +98,13 @@ RUN git clone --recursive --branch v${CARTODB_VERSION} --depth 1 https://github.
 # Environment type.
 ENV RAILS_ENV=development
 
-#RUN whereis libxml2
-#RUN ls -lah /usr/include/libxml2
-#RUN ls -lah /usr/local/
-
-# RUN gem install nokogiri -v 1.8.5   --debug --backtrace --verbose
-
-# RUN gem install nokogiri -v '1.8.5' -- \
-#     --use-system-libraries \
-#     --with-xml2-lib=/usr/lib \
-#     --with-xml2-include=/usr/include/libxml2 \
-#     --with-xslt-lib=/usr/lib \
-#     --with-xslt-include=/usr/include/libxslt
-
 # https://nokogiri.org/tutorials/installing_nokogiri.html
 RUN  gem install nokogiri -- --use-system-libraries 
-# RUN  gem install nokogiri -- --use-system-libraries   \
-#    --with-xml2-include=/usr/include/libxml2/libxml \
-#    --with-xml2-lib=/usr/lib \
-#    --with-xslt-include=/usr/include/libxslt \
-#    --with-xslt-lib=/usr/lib
-# RUN apt-get install  patch   &&  gem install nokogiri
-# RUN gem install nokogiri
-# RUN gem install nokogiri -v '1.8.5' --source 'http://rubygems.org/' 
-# RUN gem install nokogiri --  --with-xslt-dir=/usr/include/ibxslt  --with-xml2-dir=/usr/include/libxml2
-
-# RUN gem install bundler --version=1.17.3  
-
-# RUN bundle config build.nokogiri --use-system-libraries   \
-#     --with-xslt-dir=/usr/local/opt/libxslt  \
-#     --with-xml2-dir=/usr/local/opt/libxml2 &&  \
-#     bundle install 
-# RUN  bundle config build.nokogiri --use-system-libraries
-
 
 WORKDIR /cartodb
 
 RUN gem install  archive-tar-minitar rack && \
     bundle update thin 
-
-
-
 
 # Install Ruby dependencies.
 RUN bundle install \
